@@ -256,3 +256,4 @@ echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Por fim faremos a cl
 echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Instalação concluída! A Trackware agredece."
 echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Em casos de problemas com a instalação procure nosso suporte por meio da plataforma Trackware!"
 echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Com precisão e qualidade, a Trackware guia a sua realidade!"
+source ~/.bashrc
