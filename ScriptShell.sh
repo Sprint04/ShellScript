@@ -1,10 +1,10 @@
 #!/bin/bash
 
-PURPLE='0;35'
+PURPLE='\033[0;35m'
 NC='\033[0m'
 VERSAO=11
 
-echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Olá Usuário, serei seu assistente para instalação!;"
+echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Olá Usuário, serei seu assistente para instalação!"
 echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Vamos preparar a sua máquina para dispor da aplicação Trackware!"
 sleep 5
 
@@ -12,7 +12,7 @@ echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Vamos começar atual
 sudo apt update -y
 sleep 2
 
-echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) A seguir vamos realizar a instalação do Java;"
+echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) A seguir vamos realizar a instalação do Java"
 echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Verificando aqui se você possui o Java instalado..."
 sleep 2
 
@@ -40,8 +40,8 @@ else
 fi
 sleep 2
 
-echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) A seguir vamos realizar a instalação do Docker;"
-echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Verificando aqui se você possui o Docker instalado...;"
+echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) A seguir vamos realizar a instalação do Docker"
+echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Verificando aqui se você possui o Docker instalado..."
 
 docker --version
 if [ $? -eq 0 ]; then
@@ -57,6 +57,8 @@ else
         docker --version
         if [ $? -eq 0 ]; then
             echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Docker instalado com sucesso!"
+	    sudo docker pull mysql:5.7
+	    sudo docker run -d -p 3306:3306 --name ContainerBD -e "MYSQL_DATABASE=trackware" -e "MYSQL_ROOT_PASSWORD=Trackware000" mysql:5.7
         else 
             echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Erro na instalação do Docker."
         fi
@@ -68,23 +70,30 @@ sleep 2
 
 
 
-echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) A seguir vamos realizar a instalação do Python"
-echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Verificando aqui se você possui o Python instalado..."
-python3 --version
-if [ $? -eq 0 ]; then
+echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) A seguir vamos realizar a verificação do Python"
+
+if command -v python3 &>/dev/null; then
     echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Você já possui o Python instalado!!!"
+    echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Verificando se há atualizações para o Python..."
+    sudo apt update
+    sudo apt list --upgradable | grep -i python3
+    if [ $? -eq 0 ]; then
+        echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Existem atualizações disponíveis para o Python."
+	sudo apt upgrade python3 -y
+        echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Python atualizado!"
+    else
+        echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) O Python está atualizado."
+    fi
 else
-    echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Opa! Não identifiquei nenhuma versão do Python instalado, mas sem problemas, irei resolver isso agora!"
+    echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Opa! Python não encontrado, vamos instalar."
     echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Confirme para mim se realmente deseja instalar o Python(S/N)?"
     read inst
     if [ "$inst" == "S" ]; then
         echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Ok! Você escolheu instalar o Python ;D"
         sudo apt install python3 python3-pip -y
-       # verificando se a instalação foi bem sucedida
-       python3 --version
-        if [ $? -eq 0 ]; then
+        if command -v python3 &>/dev/null; then
             echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Python instalado com sucesso!"
-        else 
+        else
             echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Erro na instalação do Python."
         fi
     else
@@ -93,9 +102,19 @@ else
 fi
 sleep 2
 
+if ! grep -q "alias py='python3'" ~/.bashrc; then
+    echo "alias py='python3'" >> ~/.bashrc
+    echo "Alias 'py' para executar Python 3 adicionado ao ~/.bashrc"
+else
+    echo "O alias 'py' já existe no ~/.bashrc"
+fi
 
-echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) A seguir vamos realizar a instalação do PIP e em seguida os seus pacotes necessários;"
-echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Verificando aqui se você possui o PIP instalado...;"
+# Carrega as configurações
+source ~/.bashrc
+
+
+echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) A seguir vamos realizar a instalação do PIP e em seguida os seus pacotes necessários"
+echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Verificando aqui se você possui o PIP instalado..."
 pip3 --version
 if [ $? -eq 0 ]; then
     echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Você já possui o PIP instalado!!!"
@@ -122,8 +141,8 @@ fi
 sleep 2
 
 
-echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Verificando instalação dos pacotes necessários...;"
-echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Verificando instalação do pacote Geocoder...;"
+echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Verificando instalação dos pacotes necessários..."
+echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Verificando instalação do pacote Geocoder..."
 pip3 list | grep -q 'geocoder'
 if [ $? -eq 0 ]; then
     echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) O pacote 'geocoder' já está instalado."
@@ -133,7 +152,7 @@ else
     read inst
     if [ "$inst" == "S" ]; then
         echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Ok! Você escolheu instalar o pacote 'geocoder' ;D"
-        pip3 install geocoder
+        sudo pip3 install geocoder
         # verificando se a instalação foi bem sucedida
         pip3 list | grep -q 'geocoder'
          if [ $? -eq 0 ]; then
@@ -147,8 +166,8 @@ else
 fi
 sleep 2
 
-echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Verificando instalação dos pacotes necessários...;"
-echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Verificando instalação do pacote Psutil...;"
+echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Verificando instalação dos pacotes necessários..."
+echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Verificando instalação do pacote Psutil..."
 pip3 list | grep -q 'psutil'
 if [ $? -eq 0 ]; then
     echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) O pacote 'psutil' já está instalado."
@@ -158,7 +177,7 @@ else
     read inst
     if [ "$inst" == "S" ]; then
         echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Ok! Você escolheu instalar o pacote 'psutil' ;D"
-        pip3 install psutil
+        sudo pip3 install psutil
         # verificando se a instalação foi bem sucedida
         pip3 list | grep -q 'psutil'
          if [ $? -eq 0 ]; then
@@ -173,8 +192,8 @@ fi
 sleep 2
 
 
-echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Verificando instalação dos pacotes necessários...;"
-echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Verificando instalação do pacote mysql-connector...;"
+echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Verificando instalação dos pacotes necessários..."
+echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Verificando instalação do pacote mysql-connector..."
 pip3 list | grep -q 'mysql-connector'
 if [ $? -eq 0 ]; then
     echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) O pacote 'mysql-connector' já está instalado."
@@ -184,7 +203,7 @@ else
     read inst
     if [ "$inst" == "S" ]; then
         echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Ok! Você escolheu instalar o pacote 'mysql-connector' ;D"
-        pip3 install mysql-connector
+        sudo pip3 install mysql-connector
         # verificando se a instalação foi bem sucedida
         pip3 list | grep -q 'mysql-connector'
          if [ $? -eq 0 ]; then
@@ -198,8 +217,8 @@ else
 fi
 sleep 2
 
-echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Verificando instalação dos pacotes necessários...;"
-echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Verificando instalação do pacote pymssql...;"
+echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Verificando instalação dos pacotes necessários..."
+echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Verificando instalação do pacote pymssql..."
 pip3 list | grep -q 'pymssql'
 if [ $? -eq 0 ]; then
     echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) O pacote 'pymssql' já está instalado."
@@ -209,7 +228,7 @@ else
     read inst
     if [ "$inst" == "S" ]; then
         echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Ok! Você escolheu instalar o pacote 'pymssql' ;D"
-        pip3 install pymssql
+        sudo pip3 install pymssql
         # verificando se a instalação foi bem sucedida
         pip3 list | grep -q 'pymssql'
          if [ $? -eq 0 ]; then
@@ -224,8 +243,8 @@ fi
 sleep 2
 
 
-echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Por fim faremos a clonagem do JAR da aplicação..;"
- echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Clonando o projeto do GitHub;"
+echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Por fim faremos a clonagem do JAR da aplicação.."
+ echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Clonando o projeto do GitHub"
     git clone https://github.com/Sprint04/JAR-Grupo.git
     if [ $? -eq 0 ]; then
         echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Projeto clonado com sucesso."
