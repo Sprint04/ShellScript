@@ -10,6 +10,7 @@ sleep 5
 
 echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Vamos começar atualizando os pacotes do sistema: "
 sudo apt update -y
+sudo apt upgrade -y
 sleep 2
 
 echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) A seguir vamos realizar a instalação do Java"
