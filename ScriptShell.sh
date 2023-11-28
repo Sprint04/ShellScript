@@ -58,6 +58,8 @@ else
         docker --version
         if [ $? -eq 0 ]; then
             echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Docker instalado com sucesso!"
+	    sudo systemctl start docker
+     	    sudo systemctl enable docker
 	    sudo docker pull mysql:5.7
 	    sudo docker run -d -p 3306:3306 --name ContainerBD -e "MYSQL_DATABASE=trackware" -e "MYSQL_ROOT_PASSWORD=Trackware000" mysql:5.7
         else 
