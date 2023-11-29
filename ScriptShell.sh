@@ -249,13 +249,10 @@ sleep 2
 echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Por fim faremos a clonagem do JAR da aplicação.."
  echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Clonando o projeto do GitHub"
     git clone https://github.com/Sprint04/JAR-Grupo.git
-    cd JAR-Grupo
-    APItrackware.jar mv /~
-    rm .git
-    rm Readme.md
-    rm Processos.jar
-    cd ..
-    rmdir JAR-Grupo
+    
+    mv JAR-Grupo/APItrackware.jar ../
+    rm -rf JAR-Grupo
+    
     if [ $? -eq 0 ]; then
         echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Projeto clonado com sucesso."
     else
