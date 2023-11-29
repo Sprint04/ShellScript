@@ -251,6 +251,7 @@ echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Por fim faremos a cl
     git clone https://github.com/Sprint04/JAR-Grupo.git
     cd JAR-Grupo
     APItrackware.jar mv /~
+    rm .git
     rm Readme.md
     rm Processos.jar
     cd ..
