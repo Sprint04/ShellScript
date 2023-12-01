@@ -302,6 +302,7 @@ echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Por fim faremos a cl
     
     mv JAR-Grupo/APItrackware.jar ../
     rm -rf JAR-Grupo
+    cd ..
     
     if [ $? -eq 0 ]; then
         echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Projeto clonado com sucesso."
