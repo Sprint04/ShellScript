@@ -245,6 +245,56 @@ else
 fi
 sleep 2
 
+echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Verificando instalação dos pacotes necessários..."
+echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Verificando instalação do pacote requests..."
+pip3 list | grep -q 'requests'
+if [ $? -eq 0 ]; then
+    echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) O pacote 'requests' já está instalado."
+else
+    echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Opa! Não identifiquei o pacote 'requests' instalado, mas sem problemas, irei resolver isso agora!"
+    echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Confirme para mim se realmente deseja instalar o pacote 'requests'(S/N)?"
+    read inst
+    if [ "$inst" == "S" ]; then
+        echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Ok! Você escolheu instalar o pacote 'requests' ;D"
+        sudo pip3 install requests
+        # verificando se a instalação foi bem sucedida
+        pip3 list | grep -q 'requests'
+         if [ $? -eq 0 ]; then
+            echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Pacote 'requests' instalado com sucesso!"
+        else 
+            echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Erro na instalação do pacote 'requests'."
+        fi
+    else
+        echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Você optou por não instalar o pacote 'requests' por enquanto, vamos prosseguir!"
+    fi
+fi
+sleep 2
+
+echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Verificando instalação dos pacotes necessários..."
+echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Verificando instalação do pacote simplejson..."
+pip3 list | grep -q 'pymssql'
+if [ $? -eq 0 ]; then
+    echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) O pacote 'simplejson' já está instalado."
+else
+    echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Opa! Não identifiquei o pacote 'simplejson' instalado, mas sem problemas, irei resolver isso agora!"
+    echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Confirme para mim se realmente deseja instalar o pacote 'simplejson'(S/N)?"
+    read inst
+    if [ "$inst" == "S" ]; then
+        echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Ok! Você escolheu instalar o pacote 'simplejson' ;D"
+        sudo pip3 install pymssql
+        # verificando se a instalação foi bem sucedida
+        pip3 list | grep -q 'simplejson'
+         if [ $? -eq 0 ]; then
+            echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Pacote 'simplejson' instalado com sucesso!"
+        else 
+            echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Erro na instalação do pacote 'simplejson'."
+        fi
+    else
+        echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Você optou por não instalar o pacote 'simplejson' por enquanto, vamos prosseguir!"
+    fi
+fi
+sleep 2
+
 
 echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Por fim faremos a clonagem do JAR da aplicação.."
  echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Clonando o projeto do GitHub"
