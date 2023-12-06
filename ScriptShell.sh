@@ -281,7 +281,7 @@ else
     read inst
     if [ "$inst" == "S" ]; then
         echo "$(tput setaf 10)[Trackware assistant]:$(tput setaf 7) Ok! Você escolheu instalar o pacote 'simplejson' ;D"
-        sudo pip3 install pymssql
+        sudo pip3 install simplejson
         # verificando se a instalação foi bem sucedida
         pip3 list | grep -q 'simplejson'
          if [ $? -eq 0 ]; then
